@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1618756612 source:/home/ayush/C++ work/Kbot/Kbot/main.cpp
+1618831989 source:/home/ayush/C++ work/Kbot/Kbot/main.cpp
 	<opencv/cv.h>
 	<opencv2/core.hpp>
 	<opencv2/imgcodecs/imgcodecs.hpp>
@@ -12,4 +12,8 @@
 	<opencv2/opencv.hpp>
 	<queue>
 	<math.h>
+
+1618834339 source:/home/ayush/C++ work/Kbot/Kbot/a_star.cpp
+	<bits/stdc++.h>
+	<iostream>
 

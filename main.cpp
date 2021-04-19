@@ -12,7 +12,7 @@
 #include <opencv2/opencv.hpp>
 #include <queue>
 #include <math.h>
-
+#include "a_star.h"
 
 using namespace cv;
 using namespace std;
@@ -382,13 +382,17 @@ void map_2d()
     int m = 64;
     int n = 64;
 
-    for(int i=0; i<64; i++)
+    for(int i=0; i<m; i++)
         {
             for(int j=0; j<n; j++)
                 {
 
-                    map2d[j][i] = (int)image.at<uchar>(j,i); //
+                    map2d[i][j] = ((int)image.at<uchar>(i,j)) > 200;
+
+
                 }
+
+
         }
 
 }
@@ -501,10 +505,11 @@ void sweep_obs(Robot& bot)
 
 void conv_to_grey()
 {
-        Mat image8u1;
+    Mat image8u1;
     cvtColor(image, image8u1, COLOR_RGB2GRAY);
 
     image = image8u1.clone();
+
     //cout<<image<<endl;
 
     //bfs(64, 64, 34, 26, 0, 0);
@@ -532,6 +537,8 @@ int image_read()
  //namedWindow(windowName);
  //resizeWindow(windowName, 64*3, 64*3);
  //imshow(windowName, image); // Show our image inside the created window.
+  //  imshow("cgrey", image);
+
 
  waitKey(0); // Wait for any keystroke in the window
 
@@ -546,24 +553,26 @@ int main()
 
 
     Robot r(26, 34);
-
-    r.p.print_pt();
+    //r.p.print_pt();
     //sweep_empty(r);
 
     //sweep_obs(r);
     image_read();
 
-    conv_to_grey();
+
+
+
+    //conv_to_grey();
     map_2d();
 
-    dPoint p(6, 6); dPoint p1(0, 0);
-    bfs(p, p1);
-    sweep_obs(r);
+
+    maint(map2d);
+    //dPoint p(6, 6); dPoint p1(0, 0);
+    //bfs(p, p1);
+    //sweep_obs(r);
 
 
-
-
-
+return 0;
 }
 
 
