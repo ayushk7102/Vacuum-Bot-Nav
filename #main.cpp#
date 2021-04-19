@@ -1,0 +1,397 @@
+   /*
+#include <opencv/cv.h>
+#include <opencv2/core.hpp>
+#include <opencv2/imgcodecs/imgcodecs.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/opencv.hpp>
+*/
+#include <algorithm>
+#include <iostream>
+#include <list>
+#include <opencv2/opencv.hpp>
+#include <math.h>
+
+
+using namespace cv;
+using namespace std;
+class dPoint
+{
+public:
+    int x;
+    int y;
+dPoint()
+{
+    x=0;
+    y=0;
+}
+dPoint(int x, int y)
+    {
+        this->x = x;
+        this->y = y;
+
+    }
+void print_pt()
+{
+    cout << "("+to_string(x)+","+to_string(y)+")" << endl;
+}
+string getstr()
+    {
+       return "("+to_string(x)+","+to_string(y)+")" ;
+    }
+};
+
+
+class Robot
+{
+public:
+    int x;
+    int y;
+    dPoint p;
+    int dir; //DIRECTION: 0 (UP), 1(RIGHT), 2(DOWN), 3(LEFT)
+
+    Robot()
+    {
+        x = 0;
+        y = 0;
+        dir = 0;
+    }
+    Robot(int x, int y)
+    {
+        this->x = x;
+        this->y = y;
+
+        p.x = x;
+        p.y = y;
+
+        dir = 0; //INITIALISED UPWARDS
+    }
+
+    int getx()
+    {
+        return x;
+    }
+    int gety()
+    {
+        return y;
+    }
+    void set_xy(int xa, int ya)
+    {
+        this->x = xa;
+        this->y = ya;
+
+
+    }
+
+    void setdir(int d)
+    {
+        dir = d;
+
+    }
+
+    void turn(int rotations)
+    {
+        if(rotations < 0)
+            {
+                rotations += 4;
+            }
+
+        for(int i=1; i<=rotations; i++)
+            {
+                if(dir == 3)
+                    {
+                        dir = 0;
+                    }
+                dir++;
+
+            }
+    }
+
+    void move_bot(int steps)
+    {
+        switch(dir)
+        {
+        case 0:
+            y-=steps;
+            break;
+        case 1:
+            x+=steps;
+            break;
+        case 2:
+            y+=steps;
+            break;
+        case 3:
+            x-=steps;
+            break;
+
+        }
+
+    }
+
+
+    string printloc()
+    {
+        //cout << "i'm here" << endl;
+        cout << to_string(x)+","+to_string(y) << endl;
+        return "";
+    }
+
+
+
+};
+
+dPoint get(list<dPoint> _list, int _i){
+    list<dPoint>::iterator it = _list.begin();
+    for(int i=0; i<_i; i++){
+        ++it;
+    }
+    return *it;
+}
+float distance(dPoint p1, dPoint p2)
+{
+    int x1 = p1.x;
+    int y1 = p1.y;
+    int x2 = p2.x;
+    int y2 = p2.y;
+
+    return sqrt(pow((x2- x1), 2) + pow((y2 - y1), 2));
+}
+
+
+int MAP_SIZE = 64;
+
+int grid[64][64]= {};
+list<dPoint> plist ;
+
+
+void printlist(list<dPoint> pist)
+{
+    list<dPoint>::iterator it = pist.begin();
+    cout << "[";
+    for(int i=0; i<pist.size(); i++){
+
+        //cout <<"\r"<< (*it).getstr();
+        cout << (*it).getstr() + ", " ;
+        it++;
+    }
+
+cout << "]";
+cout << endl;
+}
+
+dPoint find_nearest_edge(dPoint p)
+{
+    int x=p.x;
+    int y=p.y;
+
+    int min_d = std::min({x, y, MAP_SIZE-x, MAP_SIZE-y });
+
+    dPoint edge_pt;
+
+        if(min_d == x)
+            {
+                edge_pt.x = 0;
+                edge_pt.y = y;
+            }
+        else if(min_d == y)
+            {   edge_pt.x = x;
+                edge_pt.y = 0;
+            }
+
+        else if(min_d == MAP_SIZE-x)
+        {
+            edge_pt.x = MAP_SIZE-1;
+            edge_pt.y = y;
+        }
+
+        else if(min_d == MAP_SIZE-y)
+        {
+            edge_pt.x = x;
+            edge_pt.y = MAP_SIZE-1;
+
+        }
+
+        return edge_pt;
+}
+
+void travel_to(Robot& bot, dPoint p1, dPoint p2)
+{
+
+    int x_inc = (p1.x > p2. x)? -1: 1;
+    int y_inc = (p1.y > p2. y)? -1: 1;
+
+    int x1 = p1.x;
+    int x2 = p2.x;
+
+    int y1 = p1.y;
+    int y2 = p2.y;
+
+
+
+    while(x1 != x2)
+        {
+            dPoint i(x1, y1);
+            i.print_pt();
+            plist.push_back(i);
+
+            x1+= x_inc;
+        }
+        while(y1 != y2)
+        {
+            dPoint i(x1, y1);
+            i.print_pt();
+            plist.push_back(i);
+            y1+= y_inc;
+        }
+
+
+        bot.set_xy(p2.x, p2.y);
+
+}
+
+void goto_edge(Robot& bot)
+{
+
+        int x = bot.x;
+        int y = bot.y;
+        dPoint init(x, y);
+        dPoint l;
+        if(!(x == 0 || y == 0 || x == MAP_SIZE-1 || y == MAP_SIZE-1) )
+       {
+
+          l = find_nearest_edge(init);
+          l.print_pt();
+       }
+
+       cout << "Travelling to  to edge" <<endl;
+
+       travel_to(bot, init, l);
+       //printf(plist.size());
+       //print(plist);
+
+
+    // getting size of the list
+    int size = plist.size();
+
+    //Point pp = get(plist, 0);
+    //pp.print_pt();
+
+
+}
+
+void goto_corner(Robot& bot)
+{
+    cout<<"Travelling to corner"<<endl;
+    //bot.printloc();
+    int x = bot.getx();
+    int y =bot.gety();
+    int x2 =0 , y2 = 0;
+
+
+    dPoint p1(x, y);
+    //p1.print_pt();
+
+    if(x == 0 || x == MAP_SIZE-1)
+        {
+            y2 = (y>MAP_SIZE/2)? MAP_SIZE-1:0 ;
+        }
+    else if(y== 0 || y == MAP_SIZE-1)
+        {
+            x2 = (y>MAP_SIZE/2)? MAP_SIZE-1:0 ;
+        }
+
+    dPoint p2(x2, y2);
+    //p2.print_pt();
+    travel_to(bot, p1, p2);
+}
+void sweep_empty(Robot& bot)
+{
+
+    goto_edge(bot);
+    goto_corner(bot);
+
+    bool upsweep = (bot.gety() == 0)? false:true ;
+    bool rightsweep = (bot.getx() == 0)?true: false;
+    //bot.printloc();
+    list<dPoint> cleaned ;
+
+
+    if(upsweep)
+        {
+            for(int r=MAP_SIZE-1 ; r>=0; r--)
+                {
+                    int inc = (rightsweep)? 1:-1;
+                    int c = (rightsweep)? 0: MAP_SIZE-1;
+
+                    for(int i=0;i<MAP_SIZE;i++)
+                        {
+                            dPoint p(c, r);
+                            plist.push_back(p);
+                            c+=inc;
+                            p.print_pt();
+                        }
+                    rightsweep = !rightsweep;
+                }
+        }
+
+
+
+}
+void spiral_empty(Robot& bot)
+{
+    goto_edge(bot);
+    //printlist(plist);
+    cout << "At edge" <<endl;
+    bot.printloc();
+
+
+}
+void sweep_obs(Robot& r)
+{
+
+}
+
+int main()
+{
+
+
+    Robot r(26, 34);
+
+    r.p.print_pt();
+    sweep_empty(r);
+    //spiral_empty(r);
+
+    sweep_obs(r);
+
+return 0;
+}
+
+int image_read()
+{
+     Mat image = imread("/home/ayush/Desktop/Manas/Final/square_map.jpg");
+
+ // Check for failure
+ if (image.empty())
+ {
+  cout << "Could not open or find the image" << endl;
+  cin.get(); //wait for any key press
+  return -1;
+ }
+
+ string windowName = "The Guitar"; //Name of the window
+
+ cv::namedWindow(windowName); // Create a window
+
+ imshow(windowName, image); // Show our image inside the created window.
+
+ cv::waitKey(0); // Wait for any keystroke in the window
+
+ cv::destroyWindow(windowName); //destroy the created window
+
+
+
+
+    return 0;
+
+}
+

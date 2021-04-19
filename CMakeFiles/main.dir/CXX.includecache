@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/ayush/C++ work/Kbot/Kbot/main.cpp
+opencv/cv.h
+-
+opencv2/core.hpp
+-
+opencv2/imgcodecs/imgcodecs.hpp
+-
+opencv2/imgcodecs.hpp
+-
+opencv2/highgui.hpp
+-
+opencv2/opencv.hpp
+-
+algorithm
+-
+iostream
+-
+list
+-
+opencv2/opencv.hpp
+-
+math.h
+-
+
