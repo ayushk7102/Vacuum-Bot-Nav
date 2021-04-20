@@ -16,6 +16,9 @@
 
 using namespace cv;
 using namespace std;
+
+typedef pair<int, int> Pair;
+
 class dPoint
 {
 public:
@@ -42,7 +45,19 @@ string getstr()
     }
 };
 
+Pair makepair(dPoint p)
+{
+    Pair pa(p.y, p.x);
+    return pa;
 
+
+}
+
+dPoint makepoint(Pair pa)
+{
+    dPoint dp(pa.second, pa.first);
+    return dp;
+}
 class Robot
 {
 public:
@@ -137,17 +152,23 @@ public:
         return "";
     }
 
+    dPoint getpoint()
+    {
+        dPoint p(x, y);
+        return p;
+    }
 
 
 };
-
 dPoint get(list<dPoint> _list, int _i){
     list<dPoint>::iterator it = _list.begin();
-    for(int i=0; i<_i; i++){
+    for(int i=0; i<_list.size(); i++){
+
         ++it;
     }
     return *it;
 }
+
 float distance(dPoint p1, dPoint p2)
 {
     int x1 = p1.x;
@@ -241,40 +262,30 @@ dPoint find_nearest_edge(dPoint p)
 void travel_to(Robot& bot, dPoint p1, dPoint p2)
 {
 
-    int x_inc = (p1.x > p2. x)? -1: 1;
-    int y_inc = (p1.y > p2. y)? -1: 1;
+    Pair src = makepair(p1);
+    Pair dest = makepair(p2);
 
-    int x1 = p1.x;
-    int x2 = p2.x;
-
-    int y1 = p1.y;
-    int y2 = p2.y;
-
-
-
-    while(x1 != x2)
+    list<Pair> path_points = maint(grid, src, dest);
+    cout<<endl;
+    list<Pair>::iterator it = path_points.begin();
+    for(int i=0; i<path_points.size(); i++)
         {
-            dPoint i(x1, y1);
-            i.print_pt();
-            plist.push_back(i);
-
-            x1+= x_inc;
-        }
-        while(y1 != y2)
-        {
-            dPoint i(x1, y1);
-            i.print_pt();
-            plist.push_back(i);
-            y1+= y_inc;
+            dPoint dp = makepoint(*it);
+            dp.print_pt();
+            bot.set_xy(dp.x, dp.y);
+            bot.printloc();
+            it++;
         }
 
 
-        bot.set_xy(p2.x, p2.y);
+
+
 
 }
 
 void goto_edge(Robot& bot)
 {
+
 
         int x = bot.x;
         int y = bot.y;
@@ -388,7 +399,7 @@ void map_2d()
                 {
 
                     map2d[i][j] = ((int)image.at<uchar>(i,j)) > 200;
-
+                    grid[i][j] = ((int)image.at<uchar>(i,j)) > 200;
 
                 }
 
@@ -403,7 +414,7 @@ int dr[] = {-1, 1, 0, 0};
 int dc[] = {0, 0, +1, -1};
 
 
-int explore_neighbours(int r, int c, int nodes_next)
+/*int explore_neighbours(int r, int c, int nodes_next)
 {
     int rr, cc;
 
@@ -491,7 +502,7 @@ void bfs(dPoint p1, dPoint p2)
 
 }
 
-
+*/
 
 void travel_obs(Robot& bot)
 {
@@ -547,30 +558,49 @@ int image_read()
  return 0;
 
 }
-
 int main()
 {
 
 
-    Robot r(26, 34);
+
+
     //r.p.print_pt();
     //sweep_empty(r);
+
 
     //sweep_obs(r);
     image_read();
 
 
 
-
-    //conv_to_grey();
+    conv_to_grey();
     map_2d();
 
 
-    maint(map2d);
+    Robot r(15, 12);
+    dPoint pr = r.getpoint();
+    dPoint p2(14, 4);
+    travel_to(r, pr, p2);
+    r.printloc();
+
+    /*dPoint p1(12, 6);
+    dPoint p2(32, 57);
+    Pair src = makepair(p1);
+    Pair dest = makepair(p2);
+
+    list<Pair> path_points = maint(map2d, src, dest);
+    cout<<endl;
+    list<Pair>::iterator it = path_points.begin();
+    for(int i=0; i<path_points.size(); i++)
+        {
+            dPoint dp = makepoint(*it);
+            dp.print_pt();
+            it++;
+        }
     //dPoint p(6, 6); dPoint p1(0, 0);
     //bfs(p, p1);
     //sweep_obs(r);
-
+*/
 
 return 0;
 }

@@ -28,6 +28,6 @@ void tracePath(cell cellDetails[][COL], Pair dest);
 
 void aStarSearch(int grid[][COL], Pair src, Pair dest);
 void aStarSearch(int grid[][COL], Pair src, Pair dest);
-void maint(int grid[][COL]);
+list<Pair> maint(int grid[][COL], Pair src, Pair dest);
 #endif
 

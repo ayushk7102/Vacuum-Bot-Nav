@@ -32,6 +32,9 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="CMakeLists.txt" />
+		<Unit filename="a_star.cpp" />
+		<Unit filename="a_star.h" />
 		<Unit filename="main.cpp" />
 		<Extensions />
 	</Project>

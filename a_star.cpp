@@ -1,5 +1,7 @@
 #include <bits/stdc++.h>
 #include <iostream>
+#include <list>
+
 using namespace std;
 
 #define ROW 64
@@ -62,6 +64,8 @@ double calculateHValue(int row, int col, Pair dest)
 
 // A Utility Function to trace the path from the source
 // to destination
+
+list<Pair> path_points;
 void tracePath(cell cellDetails[][COL], Pair dest)
 {
     printf("\nThe Path is ");
@@ -84,6 +88,7 @@ void tracePath(cell cellDetails[][COL], Pair dest)
         pair<int, int> p = Path.top();
         Path.pop();
         printf("-> (%d,%d) ", p.first, p.second);
+        path_points.push_back(p);
     }
 
     return;
@@ -609,7 +614,7 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest)
 }
 
 // Driver program to test above function
-int maint(int grid[][64])
+list<Pair> maint(int grid[][64], Pair src, Pair dest)
 {
     /* Description of the Grid-
      1--> The cell is not blocked
@@ -627,12 +632,12 @@ int maint(int grid[][64])
             { 1, 1, 1, 0, 0, 0, 1, 0, 0, 1 } };
 */
     // Source is the left-most bottom-most corner
-    Pair src = make_pair(8, 0);
+    //Pair src = make_pair(12, 6);
 
     // Destination is the left-most top-most corner
-    Pair dest = make_pair(0, 0);
+    //Pair dest = make_pair(57, 32);
 
     aStarSearch(grid, src, dest);
 
-    return (0);
+    return path_points;
 }
