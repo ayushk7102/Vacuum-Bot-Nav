@@ -4,8 +4,8 @@
 
 using namespace std;
 
-#define ROW 64
-#define COL 64
+#define ROW 500
+#define COL 500
 
 // Creating a shortcut for int, int pair type
 typedef pair<int, int> Pair;
@@ -102,6 +102,7 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest)
     // If the source is out of range
     if (isValid(src.first, src.second) == false) {
         printf("Source is invalid\n");
+        printf("%d oink %d", src.first, src.second );
         return;
     }
 
@@ -614,7 +615,7 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest)
 }
 
 // Driver program to test above function
-list<Pair> maint(int grid[][64], Pair src, Pair dest)
+list<Pair> maint(int grid[][500], Pair src, Pair dest)
 {
     /* Description of the Grid-
      1--> The cell is not blocked

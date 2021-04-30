@@ -3,7 +3,7 @@
 #include <bits/stdc++.h>
 #include <iostream>
 using namespace std;
-const int COL = 64;
+const int COL = 500;
 
 typedef pair<int, int> Pair;
 
