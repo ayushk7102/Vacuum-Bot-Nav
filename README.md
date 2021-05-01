@@ -23,7 +23,7 @@ In process of cleaning:
 ![Screenshot from 2021-04-30 16-57-42](https://user-images.githubusercontent.com/65803868/116689213-6efaf200-a9d5-11eb-9ec0-2f6ca9545a6d.png)
 
 
-Final sweep path:
+Final sweep path, with overlaps (repeated traversals) in blue: 
 
 ![Screenshot from 2021-04-30 17-04-51](https://user-images.githubusercontent.com/65803868/116689860-390a3d80-a9d6-11eb-93ad-90f51140f780.png)
 
