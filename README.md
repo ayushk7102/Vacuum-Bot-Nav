@@ -1,14 +1,15 @@
 # Robot Vacuum Navigation Planner
 
-Edit variable 'img_path' in main.cpp to add local path of custom maps.
-500x500 grayscale maps accepted.
+To run:
 
-To run: execute main.cpp
+1. Edit variable 'img_path' in main.cpp to add local path of custom maps.
+
+2. Build and run main.cpp
 
 
 Cleaned areas will be shown in red. Cleaned, path overlap (multiple passes) areas will be shown in blue.
 
-Bot is a circle of radius 4.
+Bot is a circle of radius 4. (Can be changed, variable 'radius' in main.cpp)
 
 Sample output:
 
