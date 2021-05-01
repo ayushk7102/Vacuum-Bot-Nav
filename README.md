@@ -11,7 +11,7 @@ Cleaned areas will be shown in red. Cleaned, path overlap (multiple passes) area
 
 Bot is a circle of radius 4. (Can be changed, variable 'radius' in main.cpp)
 
-Sample output:
+# Sample output:
 
 For test map:
 
